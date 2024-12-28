@@ -19,19 +19,37 @@ const AddHabitDetails: React.FC<AddHabitDetailsProps> = ({onAddHabit}) => {
     }
   };
 
+  const handleCancel = () => {
+    onAddHabit('');
+    setHabitTitle('');
+  };
+
   return (
-    <View style={{width:'90%', height: '60%', backgroundColor:'grey', justifyContent:'center', alignItems:'center', borderRadius: 10}}>
-      <TextInput 
-        placeholder='Enter habit title'
-        onChangeText={newText => setHabitTitle(newText)}
-        defaultValue={habitTitle}
-        style={{width:'60%', height:'20%', backgroundColor:'white', marginBottom:40}}>
-      </TextInput>
-      <TouchableOpacity
-        style={{backgroundColor:'black', width: 80, height: 30, borderRadius: 5, justifyContent:'center', alignItems:'center'}} 
-        onPress={(handleSave)}>
-        <Text style={{color:'white'}}>Save</Text>
-      </TouchableOpacity>
+    <View style={{width:'90%', height: '40%', backgroundColor:'#25274D', justifyContent:'center', alignItems:'center', borderRadius: 10}}>
+      <View style={{width:'80%'}}>
+        <Text style={{color:'white', paddingStart: 2, marginBottom:5}}>Enter habit title:</Text>
+        <TextInput 
+         onChangeText={newText => setHabitTitle(newText)}
+         defaultValue={habitTitle}
+         style={{width:'100%', height:'25%', backgroundColor:'#AAABB8', marginBottom:25, borderRadius: 5}}>
+        </TextInput>
+        <Text style={{color:'white', paddingStart:2, marginBottom:5}}>Choose color:</Text>
+        <TextInput 
+          style={{width:'100%', height:'25%', backgroundColor:'#AAABB8', borderRadius: 5}}>
+        </TextInput>
+      </View>
+      <View style={{flexDirection:'row', justifyContent:'space-between', width:'80%'}}>
+        <TouchableOpacity
+          style={{backgroundColor:'#464886', width: 120, height: 40, borderRadius: 5, justifyContent:'center', alignItems:'center'}} 
+          onPress={(handleSave)}>
+          <Text style={{color:'white'}}>Create Habit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{backgroundColor:'#464886', width: 80, height: 40, borderRadius: 5, justifyContent:'center', alignItems:'center'}} 
+          onPress={(handleCancel)}>
+          <Text style={{color:'white'}}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -41,14 +59,16 @@ export default function App() {
   const [showAddHabitBox, setShowAddHabitBox] = useState<Boolean>(false);
 
   const addHabit = (title: string) => {
-    setHabits((prev) => [...prev, { id: prev.length + 1, title }]);
+    if (title.length != 0) {
+      setHabits((prev) => [...prev, { id: prev.length + 1, title }]);
+    }
     setShowAddHabitBox(false);
   };
 
   return (
     <View style={styles.container}>
       {showAddHabitBox === true ? (
-        <View>
+        <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
           <AddHabitDetails onAddHabit={addHabit}/>
         </View>
       ) : (
@@ -81,7 +101,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    paddingTop: 50,
   },
   header: {
     fontFamily: 'Didot',
@@ -89,6 +108,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingLeft: 10,
     marginBottom: 10,
+    marginTop: 50,
   },
   title: {
     color: 'white',
